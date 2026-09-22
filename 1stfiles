@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PAIR TEMPLATE</title>
+
+<style>
+
+/* =====================================================
+   기본
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #222;
+    font-family: Arial, "Noto Sans KR", sans-serif;
+}
+
+
+/* =====================================================
+   편집 영역
+===================================================== */
+
+.editor {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+/* =====================================================
+   실제 페어틀
+===================================================== */
+
+.canvas {
+    position: relative;
+
+    width: 100%;
+    aspect-ratio: 1024 / 1462;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            #eeeeee,
+            #000000
+        );
+}
+
+
+/* =====================================================
+   페어명
+===================================================== */
+
+.pair-name {
+    position: absolute;
+
+    left: 25%;
+    top: 3%;
+
+    width: 50%;
+    height: 8%;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #000;
+
+    font-size: clamp(25px, 6vw, 55px);
+    font-weight: 900;
+
+    text-align: center;
+
+    resize: none;
+
+    overflow: hidden;
+
+    padding: 0;
+}
+
+
+/* =====================================================
+   사진 원
+===================================================== */
+
+.photo-circle {
+    position: absolute;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: #a45ed8;
+
+    cursor: pointer;
+}
+
+
+/* 사진 */
+
+.photo-circle img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: none;
+}
+
+
+/* 사진 넣기 전 */
+
+.photo-circle span {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+
+    font-size: 13px;
+
+    text-align: center;
+
+    pointer-events: none;
+}
+
+
+/* 왼쪽 위 원 */
+
+.photo-one {
+    left: 10%;
+    top: 16%;
+
+    width: 20%;
+    aspect-ratio: 1 / 1;
+}
+
+
+/* 오른쪽 아래 원 */
+
+.photo-two {
+    right: 10%;
+    top: 53%;
+
+    width: 20%;
+    aspect-ratio: 1 / 1;
+}
+
+
+/* =====================================================
+   하늘색 텍스트 박스
+===================================================== */
+
+.text-box {
+    position: absolute;
+
+    border: none;
+    outline: none;
+
+    background: #9bc9f5;
+
+    color: #000;
+
+    font-family: Arial, "Noto Sans KR", sans-serif;
+
+    font-size: clamp(12px, 2.2vw, 20px);
+
+    font-weight: 600;
+
+    text-align: center;
+
+    resize: none;
+
+    overflow: hidden;
+
+    padding: 12px;
+
+    border-radius: 25px;
+}
+
+
+/* 위쪽 작은 박스 */
+
+.text-one {
+    left: 36%;
+    top: 16.5%;
+
+    width: 48%;
+    height: 6%;
+}
+
+
+/* 위쪽 큰 박스 */
+
+.text-two {
+    left: 33%;
+    top: 24%;
+
+    width: 52%;
+    height: 14%;
+
+    border-radius: 35px;
+}
+
+
+/* 아래쪽 작은 박스 */
+
+.text-three {
+    left: 18%;
+    top: 51%;
+
+    width: 48%;
+    height: 6%;
+}
+
+
+/* 아래쪽 큰 박스 */
+
+.text-four {
+    left: 16%;
+    top: 59%;
+
+    width: 52%;
+    height: 14%;
+
+    border-radius: 35px;
+}
+
+
+/* 가장 아래 큰 박스 */
+
+.text-five {
+    left: 7%;
+    top: 80%;
+
+    width: 86%;
+    height: 18%;
+
+    border-radius: 40px;
+}
+
+
+/* =====================================================
+   편집 메뉴
+===================================================== */
+
+.controls {
+    margin-top: 20px;
+
+    padding: 20px;
+
+    background: white;
+
+    border-radius: 20px;
+}
+
+
+.controls h2 {
+    margin-top: 0;
+}
+
+
+/* 각각의 설정 */
+
+.control-group {
+    padding: 15px 0;
+
+    border-bottom: 1px solid #ddd;
+}
+
+
+.control-group:last-child {
+    border-bottom: none;
+}
+
+
+.control-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-weight: bold;
+}
+
+
+/* =====================================================
+   버튼
+===================================================== */
+
+button {
+    width: 100%;
+
+    padding: 11px;
+
+    margin-bottom: 7px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #eeeeee;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+
+button:hover {
+    background: #dddddd;
+}
+
+
+/* 파일 input 숨기기 */
+
+.file-input {
+    display: none;
+}
+
+
+/* =====================================================
+   색상 설정
+===================================================== */
+
+.color-setting {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+
+.color-setting input[type="color"] {
+    width: 55px;
+    height: 38px;
+
+    border: none;
+
+    padding: 0;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   슬라이더
+===================================================== */
+
+input[type="range"] {
+    width: 100%;
+}
+
+
+/* =====================================================
+   설명
+===================================================== */
+
+.description {
+    color: #777;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    margin-top: 5px;
+}
+
+
+/* =====================================================
+   모바일
+===================================================== */
+
+@media (max-width: 500px) {
+
+    .editor {
+        padding: 10px;
+    }
+
+    .text-box {
+        padding: 7px;
+    }
+
+    .pair-name {
+        font-size: 30px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div class="editor">
+
+
+<!-- =====================================================
+     실제 페어틀
+===================================================== -->
+
+<div class="canvas" id="canvas">
+
+
+    <!-- ==========================
+         페어명
+    =========================== -->
+
+    <textarea
+        id="pairName"
+        class="pair-name"
+        placeholder="페어명"
+        oninput="autoResize(this)">
+    </textarea>
+
+
+    <!-- ==========================
+         첫 번째 사진
+    =========================== -->
+
+    <div
+        class="photo-circle photo-one"
+        onclick="openFile('photoInputOne')">
+
+        <span id="photoTextOne">
+            사진
+        </span>
+
+        <img
+            id="photoOne"
+            alt="첫 번째 사진">
+
+    </div>
+
+
+    <!-- ==========================
+         두 번째 사진
+    =========================== -->
+
+    <div
+        class="photo-circle photo-two"
+        onclick="openFile('photoInputTwo')">
+
+        <span id="photoTextTwo">
+            사진
+        </span>
+
+        <img
+            id="photoTwo"
+            alt="두 번째 사진">
+
+    </div>
+
+
+    <!-- ==========================
+         텍스트 박스 1
+    =========================== -->
+
+    <textarea
+        id="textBoxOne"
+        class="text-box text-one"
+        placeholder="텍스트"
+        oninput="autoResize(this)">
+    </textarea>
+
+
+    <!-- 텍스트 박스 2 -->
+
+    <textarea
+        id="textBoxTwo"
+        class="text-box text-two"
+        placeholder="텍스트"
+        oninput="autoResize(this)">
+    </textarea>
+
+
+    <!-- 텍스트 박스 3 -->
+
+    <textarea
+        id="textBoxThree"
+        class="text-box text-three"
+        placeholder="텍스트"
+        oninput="autoResize(this)">
+    </textarea>
+
+
+    <!-- 텍스트 박스 4 -->
+
+    <textarea
+        id="textBoxFour"
+        class="text-box text-four"
+        placeholder="텍스트"
+        oninput="autoResize(this)">
+    </textarea>
+
+
+    <!-- 텍스트 박스 5 -->
+
+    <textarea
+        id="textBoxFive"
+        class="text-box text-five"
+        placeholder="텍스트"
+        oninput="autoResize(this)">
+    </textarea>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     편집 메뉴
+===================================================== -->
+
+<div class="controls">
+
+<h2>PAIR TEMPLATE 편집</h2>
+
+
+<!-- =================================================
+     사진
+================================================== -->
+
+<div class="control-group">
+
+<label>사진</label>
+
+<button onclick="openFile('photoInputOne')">
+    왼쪽 위 사진 선택
+</button>
+
+<button onclick="openFile('photoInputTwo')">
+    오른쪽 아래 사진 선택
+</button>
+
+</div>
+
+
+
+<!-- =================================================
+     배경 그라데이션
+================================================== -->
+
+<div class="control-group">
+
+<label>배경 그라데이션</label>
+
+
+<div class="color-setting">
+
+<span>시작 색상</span>
+
+<input
+    type="color"
+    id="gradientColorOne"
+    value="#eeeeee"
+    oninput="changeGradient()">
+
+</div>
+
+
+<div class="color-setting">
+
+<span>끝 색상</span>
+
+<input
+    type="color"
+    id="gradientColorTwo"
+    value="#000000"
+    oninput="changeGradient()">
+
+</div>
+
+
+<label>
+    그라데이션 방향
+</label>
+
+<input
+    type="range"
+    id="gradientAngle"
+    min="0"
+    max="360"
+    value="180"
+    oninput="changeGradient()">
+
+</div>
+
+
+
+<!-- =================================================
+     텍스트 박스 색상
+================================================== -->
+
+<div class="control-group">
+
+<label>텍스트 박스 색상</label>
+
+
+<div class="color-setting">
+
+<span>위 작은 박스</span>
+
+<input
+    type="color"
+    id="boxColorOne"
+    value="#9bc9f5"
+    oninput="changeBoxColor(
+        'textBoxOne',
+        this.value
+    )">
+
+</div>
+
+
+<div class="color-setting">
+
+<span>위 큰 박스</span>
+
+<input
+    type="color"
+    id="boxColorTwo"
+    value="#9bc9f5"
+    oninput="changeBoxColor(
+        'textBoxTwo',
+        this.value
+    )">
+
+</div>
+
+
+<div class="color-setting">
+
+<span>아래 작은 박스</span>
+
+<input
+    type="color"
+    id="boxColorThree"
+    value="#9bc9f5"
+    oninput="changeBoxColor(
+        'textBoxThree',
+        this.value
+    )">
+
+</div>
+
+
+<div class="color-setting">
+
+<span>아래 큰 박스</span>
+
+<input
+    type="color"
+    id="boxColorFour"
+    value="#9bc9f5"
+    oninput="changeBoxColor(
+        'textBoxFour',
+        this.value
+    )">
+
+</div>
+
+
+<div class="color-setting">
+
+<span>가장 아래 박스</span>
+
+<input
+    type="color"
+    id="boxColorFive"
+    value="#9bc9f5"
+    oninput="changeBoxColor(
+        'textBoxFive',
+        this.value
+    )">
+
+</div>
+
+</div>
+
+
+
+<!-- =================================================
+     페어명 투명도
+================================================== -->
+
+<div class="control-group">
+
+<label>
+    페어명 투명도
+</label>
+
+<input
+    type="range"
+    id="pairOpacity"
+    min="0"
+    max="100"
+    value="100"
+    oninput="changePairOpacity()">
+
+<div class="description">
+    0 = 완전 투명 / 100 = 완전 불투명
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     숨겨진 사진 선택창
+===================================================== -->
+
+<input
+    type="file"
+    id="photoInputOne"
+    class="file-input"
+    accept="image/*"
+    onchange="loadPhoto(
+        this,
+        'photoOne',
+        'photoTextOne'
+    )">
+
+
+<input
+    type="file"
+    id="photoInputTwo"
+    class="file-input"
+    accept="image/*"
+    onchange="loadPhoto(
+        this,
+        'photoTwo',
+        'photoTextTwo'
+    )">
+
+
+
+<script>
+
+/* =====================================================
+   파일 선택창 열기
+===================================================== */
+
+function openFile(id) {
+
+    document
+        .getElementById(id)
+        .click();
+
+}
+
+
+/* =====================================================
+   사진 넣기
+===================================================== */
+
+function loadPhoto(
+    input,
+    imageId,
+    textId
+) {
+
+    const file =
+        input.files[0];
+
+    if (!file) {
+        return;
+    }
+
+
+    const image =
+        document.getElementById(imageId);
+
+    const text =
+        document.getElementById(textId);
+
+
+    image.src =
+        URL.createObjectURL(file);
+
+
+    image.style.display =
+        "block";
+
+
+    text.style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   배경 그라데이션
+===================================================== */
+
+function changeGradient() {
+
+    const colorOne =
+        document
+        .getElementById("gradientColorOne")
+        .value;
+
+
+    const colorTwo =
+        document
+        .getElementById("gradientColorTwo")
+        .value;
+
+
+    const angle =
+        document
+        .getElementById("gradientAngle")
+        .value;
+
+
+    document
+        .getElementById("canvas")
+        .style.background =
+        `linear-gradient(
+            ${angle}deg,
+            ${colorOne},
+            ${colorTwo}
+        )`;
+
+}
+
+
+/* =====================================================
+   텍스트 박스 색상
+===================================================== */
+
+function changeBoxColor(
+    boxId,
+    color
+) {
+
+    document
+        .getElementById(boxId)
+        .style.background = color;
+
+}
+
+
+/* =====================================================
+   페어명 투명도
+===================================================== */
+
+function changePairOpacity() {
+
+    const value =
+        document
+        .getElementById("pairOpacity")
+        .value;
+
+
+    document
+        .getElementById("pairName")
+        .style.opacity =
+        value / 100;
+
+}
+
+
+/* =====================================================
+   텍스트 자동 높이
+===================================================== */
+
+function autoResize(element) {
+
+    element.style.height = "auto";
+
+    element.style.height =
+        element.scrollHeight + "px";
+
+}
+
+</script>
+
+
+</body>
+</html>
