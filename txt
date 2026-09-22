@@ -8,17 +8,17 @@
 
 <style>
 
-/* ───────────────
-   전체 페이지
-──────────────── */
+/* =========================
+   기본 설정
+========================= */
+
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
     min-height: 100vh;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
     background: #eeeeee;
 
@@ -26,9 +26,9 @@ body {
 }
 
 
-/* ───────────────
-   공지창 배경
-──────────────── */
+/* =========================
+   공지창
+========================= */
 
 .notice-bg {
     position: fixed;
@@ -43,313 +43,83 @@ body {
     z-index: 1000;
 }
 
-
-/* ───────────────
-   공지창
-──────────────── */
-
 .notice {
-    width: min(500px, 80%);
+    width: min(500px, 85%);
     padding: 30px;
 
     background: white;
 
     border-radius: 25px;
 
-    box-sizing: border-box;
-
     position: relative;
+
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 }
 
-
 .notice h1 {
-    margin-top: 0;
-    margin-bottom: 20px;
+    margin: 0 0 20px;
 
     font-size: 24px;
 }
 
-
 .notice-text {
     line-height: 1.7;
+
     white-space: pre-line;
 }
-
-
-/* 닫기 버튼 */
 
 .close-button {
     position: absolute;
 
-    top: 15px;
+    top: 12px;
     right: 18px;
 
     border: none;
     background: none;
 
-    font-size: 25px;
+    font-size: 28px;
 
     cursor: pointer;
 }
 
 
-/* ───────────────
-   페어틀
-──────────────── */
-
-.pair-template {
-    width: 500px;
-
-    padding: 30px;
-
-    background: white;
-
-    box-sizing: border-box;
-}
-
-
-/* ───────────────
-   사진 프레임
-──────────────── */
-
-.photo-frame {
-    width: 100%;
-    height: 300px;
-
-    border: 3px solid black;
-
-    /*
-       숫자를 키우면
-       모서리가 더 둥글어짐
-    */
-    border-radius: 70px;
-
-    overflow: hidden;
-
-    box-sizing: border-box;
-
-    background: #eeeeee;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-/* 사진 */
-
-.photo-frame img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    display: none;
-}
-
-
-/* 사진을 넣기 전 문구 */
-
-.photo-placeholder {
-    color: #888;
-    font-size: 14px;
-}
-
-
-/* 사진 선택 버튼 */
-
-.photo-input {
-    margin-top: 15px;
-
-    display: block;
-}
-
-</style>
-</head>
-
-
-<body>
-
-
-<!-- ═════════════════════
-     공지창
-═════════════════════ -->
-
-<div class="notice-bg" id="notice">
-
-    <div class="notice">
-
-        <button
-            class="close-button"
-            onclick="closeNotice()">
-            ×
-        </button>
-
-
-        <!-- 여기부터 공지 내용을 수정하면 됨 -->
-
-        <h1>PAIR TEMPLATE</h1>
-
-        <div class="notice-text">
-
-자유롭게 사용해주세요.
-
-사용 시 출처 표기는 선택입니다.
-무단 수정 및 재배포는 삼가주세요.
-
-스탠리 스나이더 oc 사용을 금합니다.
-
-        </div>
-
-        <!-- 여기까지 공지 내용 -->
-
-
-    </div>
-
-</div>
-
-
-
-<!-- ═════════════════════
-     페어틀
-═════════════════════ -->
-
-<div class="pair-template">
-
-
-    <div class="photo-frame">
-
-        <span
-            class="photo-placeholder"
-            id="placeholder">
-            사진을 선택해주세요
-        </span>
-
-        <img
-            id="photo"
-            alt="선택한 사진">
-
-    </div>
-
-
-    <input
-        class="photo-input"
-        type="file"
-        accept="image/*"
-        onchange="loadPhoto(event)">
-
-
-</div>
-
-
-
-<script>
-
-/* ───────────────
-   공지 닫기
-──────────────── */
-
-function closeNotice() {
-
-    document.getElementById("notice").style.display = "none";
-
-}
-
-
-/* ───────────────
-   사진 불러오기
-──────────────── */
-
-function loadPhoto(event) {
-
-    const file = event.target.files[0];
-
-    if (!file) {
-        return;
-    }
-
-
-    const photo =
-        document.getElementById("photo");
-
-    const placeholder =
-        document.getElementById("placeholder");
-
-
-    photo.src =
-        URL.createObjectURL(file);
-
-
-    photo.style.display = "block";
-
-    placeholder.style.display = "none";
-
-}
-
-</script>
-
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>PAIR TEMPLATE</title>
-
-<style>
-
 /* =========================
-   기본 설정
-========================= */
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    background: #eeeeee;
-    font-family: Arial, sans-serif;
-}
-
-
-/* =========================
-   편집 화면
+   전체 편집 영역
 ========================= */
 
 .editor {
     width: 100%;
-    max-width: 700px;
-    margin: 30px auto;
-    padding: 20px;
+    max-width: 650px;
+
+    margin: 0 auto;
+    padding: 25px 15px 50px;
 }
 
 
 /* =========================
-   페어틀
+   실제 페어틀
 ========================= */
 
 .canvas {
     position: relative;
 
     width: 100%;
+
     aspect-ratio: 2 / 3;
 
     overflow: hidden;
 
-    background: linear-gradient(
-        to bottom,
-        #eeeeee,
-        #111111
-    );
+    background:
+        linear-gradient(
+            180deg,
+            #eeeeee,
+            #111111
+        );
 }
 
 
 /* =========================
-   사진 영역 공통
+   사진 영역
 ========================= */
 
 .photo {
@@ -363,7 +133,7 @@ body {
 }
 
 
-/* 사진 자체 */
+/* 사진 */
 
 .photo img {
     width: 100%;
@@ -375,7 +145,7 @@ body {
 }
 
 
-/* 사진 넣기 전 문구 */
+/* 사진 넣기 전 글자 */
 
 .photo span {
     position: absolute;
@@ -383,10 +153,11 @@ body {
     inset: 0;
 
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     color: white;
+
     font-size: 14px;
 
     pointer-events: none;
@@ -394,7 +165,7 @@ body {
 
 
 /* =========================
-   위쪽 사진
+   위쪽 둥근 직사각형
 ========================= */
 
 .photo-top {
@@ -404,7 +175,7 @@ body {
     width: 80%;
     height: 20%;
 
-    border-radius: 30px;
+    border-radius: 35px;
 }
 
 
@@ -439,15 +210,19 @@ body {
 
 
 /* =========================
-   텍스트
+   글자 입력
 ========================= */
 
 .text-box {
     position: absolute;
 
-    left: 55%;
+    left: 50%;
 
-    width: 38%;
+    width: 45%;
+
+    min-height: 50px;
+
+    padding: 5px;
 
     border: none;
     outline: none;
@@ -457,7 +232,6 @@ body {
     color: white;
 
     font-size: 30px;
-
     font-weight: bold;
 
     text-align: center;
@@ -467,18 +241,22 @@ body {
     overflow: hidden;
 }
 
+.text-box::placeholder {
+    color: rgba(255,255,255,0.7);
+}
+
 
 /* 첫 번째 글자 */
 
 .text-one {
-    top: 35%;
+    top: 34%;
 }
 
 
 /* 두 번째 글자 */
 
 .text-two {
-    top: 56%;
+    top: 55%;
 }
 
 
@@ -496,46 +274,21 @@ body {
     border-radius: 20px;
 }
 
-
 .controls h2 {
     margin-top: 0;
-}
-
-
-.control-group {
     margin-bottom: 20px;
 }
 
+.control-group {
+    margin-bottom: 25px;
+}
 
 .control-group label {
     display: block;
 
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 
     font-weight: bold;
-}
-
-
-.color-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-
-input[type="color"] {
-    width: 50px;
-    height: 35px;
-
-    border: none;
-    padding: 0;
-
-    cursor: pointer;
-}
-
-
-input[type="range"] {
-    width: 100%;
 }
 
 
@@ -546,8 +299,9 @@ input[type="range"] {
 .photo-button {
     display: block;
 
-    padding: 10px 15px;
+    width: 100%;
 
+    padding: 12px;
     margin-bottom: 8px;
 
     border: none;
@@ -557,18 +311,69 @@ input[type="range"] {
     background: #eeeeee;
 
     cursor: pointer;
-}
 
+    font-size: 14px;
+}
 
 .photo-button:hover {
     background: #dddddd;
 }
 
 
-/* 파일 input 숨김 */
+/* 파일 선택창 숨기기 */
 
 .file-input {
     display: none;
+}
+
+
+/* =========================
+   색상 선택
+========================= */
+
+.color-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+input[type="color"] {
+    width: 55px;
+    height: 40px;
+
+    border: none;
+
+    padding: 0;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   그라데이션 방향
+========================= */
+
+input[type="range"] {
+    width: 100%;
+}
+
+
+/* =========================
+   모바일
+========================= */
+
+@media (max-width: 500px) {
+
+    .editor {
+        padding: 10px;
+    }
+
+    .text-box {
+        font-size: 22px;
+    }
+
 }
 
 </style>
@@ -578,12 +383,54 @@ input[type="range"] {
 <body>
 
 
+<!-- ==================================================
+     공지창
+================================================== -->
+
+<div class="notice-bg" id="notice">
+
+    <div class="notice">
+
+        <button
+            class="close-button"
+            onclick="closeNotice()">
+            ×
+        </button>
+
+
+        <h1>PAIR TEMPLATE</h1>
+
+
+        <!-- 이 부분의 글자를 원하는 대로 수정 -->
+
+        <div class="notice-text">
+
+자유롭게 사용해주세요.
+
+사용 시 출처 표기는 선택입니다.
+무단 수정 및 재배포는 삼가주세요.
+
+스탠리 스나이더 OC 사용을 금합니다.
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================================================
+     편집 영역
+================================================== -->
+
 <div class="editor">
 
 
-    <!-- =====================
+    <!-- =========================
          실제 페어틀
-    ====================== -->
+    ========================== -->
 
     <div class="canvas" id="canvas">
 
@@ -598,9 +445,10 @@ input[type="range"] {
                 사진 넣기
             </span>
 
-            <img id="imageTop">
+            <img id="imageTop" alt="위쪽 사진">
 
         </div>
+
 
 
         <!-- 첫 번째 원 -->
@@ -613,9 +461,10 @@ input[type="range"] {
                 사진
             </span>
 
-            <img id="imageOne">
+            <img id="imageOne" alt="첫 번째 사진">
 
         </div>
+
 
 
         <!-- 두 번째 원 -->
@@ -628,25 +477,27 @@ input[type="range"] {
                 사진
             </span>
 
-            <img id="imageTwo">
+            <img id="imageTwo" alt="두 번째 사진">
 
         </div>
 
 
-        <!-- 첫 번째 텍스트 -->
+
+        <!-- 첫 번째 글자 -->
 
         <textarea
             class="text-box text-one"
-            placeholder="글자를 입력하세요"
+            placeholder="글자"
             oninput="resizeText(this)">
         </textarea>
 
 
-        <!-- 두 번째 텍스트 -->
+
+        <!-- 두 번째 글자 -->
 
         <textarea
             class="text-box text-two"
-            placeholder="글자를 입력하세요"
+            placeholder="글자"
             oninput="resizeText(this)">
         </textarea>
 
@@ -655,13 +506,14 @@ input[type="range"] {
 
 
 
-    <!-- =====================
-         편집 도구
-    ====================== -->
+    <!-- =========================
+         편집 메뉴
+    ========================== -->
 
     <div class="controls">
 
         <h2>페어틀 편집</h2>
+
 
 
         <!-- 사진 -->
@@ -670,38 +522,43 @@ input[type="range"] {
 
             <label>사진</label>
 
+
             <button
                 class="photo-button"
                 onclick="openFile('fileTop')">
                 위쪽 사진 선택
             </button>
 
+
             <button
                 class="photo-button"
                 onclick="openFile('fileOne')">
-                첫 번째 사진 선택
+                첫 번째 원 사진 선택
             </button>
+
 
             <button
                 class="photo-button"
                 onclick="openFile('fileTwo')">
-                두 번째 사진 선택
+                두 번째 원 사진 선택
             </button>
 
         </div>
 
 
 
-        <!-- 그라데이션 색상 -->
+        <!-- =========================
+             배경 그라데이션
+        ========================== -->
 
         <div class="control-group">
 
-            <label>그라데이션 색상</label>
+            <label>배경 그라데이션</label>
 
 
             <div class="color-row">
 
-                <span>위</span>
+                <span>색상 1</span>
 
                 <input
                     type="color"
@@ -710,7 +567,7 @@ input[type="range"] {
                     oninput="changeGradient()">
 
 
-                <span>아래</span>
+                <span>색상 2</span>
 
                 <input
                     type="color"
@@ -724,7 +581,9 @@ input[type="range"] {
 
 
 
-        <!-- 그라데이션 방향 -->
+        <!-- =========================
+             그라데이션 방향
+        ========================== -->
 
         <div class="control-group">
 
@@ -732,12 +591,16 @@ input[type="range"] {
                 그라데이션 방향
             </label>
 
+
             <input
                 type="range"
                 id="gradientAngle"
+
                 min="0"
                 max="360"
+
                 value="180"
+
                 oninput="changeGradient()">
 
         </div>
@@ -745,22 +608,24 @@ input[type="range"] {
 
     </div>
 
-
 </div>
 
 
 
-<!-- =========================
-     파일 선택
-========================= -->
-
+<!-- ==================================================
+     사진 파일 선택
+================================================== -->
 
 <input
     type="file"
     id="fileTop"
     class="file-input"
     accept="image/*"
-    onchange="loadImage(this, 'imageTop', 'topText')">
+    onchange="loadImage(
+        this,
+        'imageTop',
+        'topText'
+    )">
 
 
 <input
@@ -768,7 +633,11 @@ input[type="range"] {
     id="fileOne"
     class="file-input"
     accept="image/*"
-    onchange="loadImage(this, 'imageOne', 'oneText')">
+    onchange="loadImage(
+        this,
+        'imageOne',
+        'oneText'
+    )">
 
 
 <input
@@ -776,15 +645,31 @@ input[type="range"] {
     id="fileTwo"
     class="file-input"
     accept="image/*"
-    onchange="loadImage(this, 'imageTwo', 'twoText')">
+    onchange="loadImage(
+        this,
+        'imageTwo',
+        'twoText'
+    )">
 
 
 
 <script>
 
-/* =========================
-   파일 선택창 열기
-========================= */
+/* ==================================================
+   공지 닫기
+================================================== */
+
+function closeNotice() {
+
+    document.getElementById("notice").style.display = "none";
+
+}
+
+
+
+/* ==================================================
+   사진 선택창 열기
+================================================== */
 
 function openFile(id) {
 
@@ -793,15 +678,18 @@ function openFile(id) {
 }
 
 
-/* =========================
-   사진 넣기
-========================= */
+
+/* ==================================================
+   사진 불러오기
+================================================== */
 
 function loadImage(input, imageId, textId) {
 
     const file = input.files[0];
 
-    if (!file) return;
+    if (!file) {
+        return;
+    }
 
 
     const image =
@@ -825,31 +713,39 @@ function loadImage(input, imageId, textId) {
 }
 
 
-/* =========================
+
+/* ==================================================
    그라데이션 변경
-========================= */
+================================================== */
 
 function changeGradient() {
 
-    const top =
+    const colorTop =
         document.getElementById("colorTop").value;
 
-    const bottom =
+
+    const colorBottom =
         document.getElementById("colorBottom").value;
+
 
     const angle =
         document.getElementById("gradientAngle").value;
 
 
     document.getElementById("canvas").style.background =
-        `linear-gradient(${angle}deg, ${top}, ${bottom})`;
+        `linear-gradient(
+            ${angle}deg,
+            ${colorTop},
+            ${colorBottom}
+        )`;
 
 }
 
 
-/* =========================
-   텍스트 크기 자동 조절
-========================= */
+
+/* ==================================================
+   글자 입력에 맞춰 높이 조절
+================================================== */
 
 function resizeText(element) {
 
