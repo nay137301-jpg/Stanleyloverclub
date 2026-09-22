@@ -291,3 +291,577 @@ function loadPhoto(event) {
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PAIR TEMPLATE</title>
+
+<style>
+
+/* =========================
+   기본 설정
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #eeeeee;
+    font-family: Arial, sans-serif;
+}
+
+
+/* =========================
+   편집 화면
+========================= */
+
+.editor {
+    width: 100%;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+
+/* =========================
+   페어틀
+========================= */
+
+.canvas {
+    position: relative;
+
+    width: 100%;
+    aspect-ratio: 2 / 3;
+
+    overflow: hidden;
+
+    background: linear-gradient(
+        to bottom,
+        #eeeeee,
+        #111111
+    );
+}
+
+
+/* =========================
+   사진 영역 공통
+========================= */
+
+.photo {
+    position: absolute;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    background: #8050c0;
+}
+
+
+/* 사진 자체 */
+
+.photo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: none;
+}
+
+
+/* 사진 넣기 전 문구 */
+
+.photo span {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+    font-size: 14px;
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   위쪽 사진
+========================= */
+
+.photo-top {
+    left: 10%;
+    top: 5%;
+
+    width: 80%;
+    height: 20%;
+
+    border-radius: 30px;
+}
+
+
+/* =========================
+   첫 번째 원
+========================= */
+
+.photo-one {
+    left: 5%;
+    top: 31%;
+
+    width: 24%;
+    aspect-ratio: 1 / 1;
+
+    border-radius: 50%;
+}
+
+
+/* =========================
+   두 번째 원
+========================= */
+
+.photo-two {
+    left: 5%;
+    top: 52%;
+
+    width: 24%;
+    aspect-ratio: 1 / 1;
+
+    border-radius: 50%;
+}
+
+
+/* =========================
+   텍스트
+========================= */
+
+.text-box {
+    position: absolute;
+
+    left: 55%;
+
+    width: 38%;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    text-align: center;
+
+    resize: none;
+
+    overflow: hidden;
+}
+
+
+/* 첫 번째 글자 */
+
+.text-one {
+    top: 35%;
+}
+
+
+/* 두 번째 글자 */
+
+.text-two {
+    top: 56%;
+}
+
+
+/* =========================
+   편집 도구
+========================= */
+
+.controls {
+    margin-top: 20px;
+
+    padding: 20px;
+
+    background: white;
+
+    border-radius: 20px;
+}
+
+
+.controls h2 {
+    margin-top: 0;
+}
+
+
+.control-group {
+    margin-bottom: 20px;
+}
+
+
+.control-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-weight: bold;
+}
+
+
+.color-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+input[type="color"] {
+    width: 50px;
+    height: 35px;
+
+    border: none;
+    padding: 0;
+
+    cursor: pointer;
+}
+
+
+input[type="range"] {
+    width: 100%;
+}
+
+
+/* =========================
+   사진 선택 버튼
+========================= */
+
+.photo-button {
+    display: block;
+
+    padding: 10px 15px;
+
+    margin-bottom: 8px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #eeeeee;
+
+    cursor: pointer;
+}
+
+
+.photo-button:hover {
+    background: #dddddd;
+}
+
+
+/* 파일 input 숨김 */
+
+.file-input {
+    display: none;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div class="editor">
+
+
+    <!-- =====================
+         실제 페어틀
+    ====================== -->
+
+    <div class="canvas" id="canvas">
+
+
+        <!-- 위쪽 사진 -->
+
+        <div
+            class="photo photo-top"
+            onclick="openFile('fileTop')">
+
+            <span id="topText">
+                사진 넣기
+            </span>
+
+            <img id="imageTop">
+
+        </div>
+
+
+        <!-- 첫 번째 원 -->
+
+        <div
+            class="photo photo-one"
+            onclick="openFile('fileOne')">
+
+            <span id="oneText">
+                사진
+            </span>
+
+            <img id="imageOne">
+
+        </div>
+
+
+        <!-- 두 번째 원 -->
+
+        <div
+            class="photo photo-two"
+            onclick="openFile('fileTwo')">
+
+            <span id="twoText">
+                사진
+            </span>
+
+            <img id="imageTwo">
+
+        </div>
+
+
+        <!-- 첫 번째 텍스트 -->
+
+        <textarea
+            class="text-box text-one"
+            placeholder="글자를 입력하세요"
+            oninput="resizeText(this)">
+        </textarea>
+
+
+        <!-- 두 번째 텍스트 -->
+
+        <textarea
+            class="text-box text-two"
+            placeholder="글자를 입력하세요"
+            oninput="resizeText(this)">
+        </textarea>
+
+
+    </div>
+
+
+
+    <!-- =====================
+         편집 도구
+    ====================== -->
+
+    <div class="controls">
+
+        <h2>페어틀 편집</h2>
+
+
+        <!-- 사진 -->
+
+        <div class="control-group">
+
+            <label>사진</label>
+
+            <button
+                class="photo-button"
+                onclick="openFile('fileTop')">
+                위쪽 사진 선택
+            </button>
+
+            <button
+                class="photo-button"
+                onclick="openFile('fileOne')">
+                첫 번째 사진 선택
+            </button>
+
+            <button
+                class="photo-button"
+                onclick="openFile('fileTwo')">
+                두 번째 사진 선택
+            </button>
+
+        </div>
+
+
+
+        <!-- 그라데이션 색상 -->
+
+        <div class="control-group">
+
+            <label>그라데이션 색상</label>
+
+
+            <div class="color-row">
+
+                <span>위</span>
+
+                <input
+                    type="color"
+                    id="colorTop"
+                    value="#eeeeee"
+                    oninput="changeGradient()">
+
+
+                <span>아래</span>
+
+                <input
+                    type="color"
+                    id="colorBottom"
+                    value="#111111"
+                    oninput="changeGradient()">
+
+            </div>
+
+        </div>
+
+
+
+        <!-- 그라데이션 방향 -->
+
+        <div class="control-group">
+
+            <label>
+                그라데이션 방향
+            </label>
+
+            <input
+                type="range"
+                id="gradientAngle"
+                min="0"
+                max="360"
+                value="180"
+                oninput="changeGradient()">
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =========================
+     파일 선택
+========================= -->
+
+
+<input
+    type="file"
+    id="fileTop"
+    class="file-input"
+    accept="image/*"
+    onchange="loadImage(this, 'imageTop', 'topText')">
+
+
+<input
+    type="file"
+    id="fileOne"
+    class="file-input"
+    accept="image/*"
+    onchange="loadImage(this, 'imageOne', 'oneText')">
+
+
+<input
+    type="file"
+    id="fileTwo"
+    class="file-input"
+    accept="image/*"
+    onchange="loadImage(this, 'imageTwo', 'twoText')">
+
+
+
+<script>
+
+/* =========================
+   파일 선택창 열기
+========================= */
+
+function openFile(id) {
+
+    document.getElementById(id).click();
+
+}
+
+
+/* =========================
+   사진 넣기
+========================= */
+
+function loadImage(input, imageId, textId) {
+
+    const file = input.files[0];
+
+    if (!file) return;
+
+
+    const image =
+        document.getElementById(imageId);
+
+    const text =
+        document.getElementById(textId);
+
+
+    image.src =
+        URL.createObjectURL(file);
+
+
+    image.style.display =
+        "block";
+
+
+    text.style.display =
+        "none";
+
+}
+
+
+/* =========================
+   그라데이션 변경
+========================= */
+
+function changeGradient() {
+
+    const top =
+        document.getElementById("colorTop").value;
+
+    const bottom =
+        document.getElementById("colorBottom").value;
+
+    const angle =
+        document.getElementById("gradientAngle").value;
+
+
+    document.getElementById("canvas").style.background =
+        `linear-gradient(${angle}deg, ${top}, ${bottom})`;
+
+}
+
+
+/* =========================
+   텍스트 크기 자동 조절
+========================= */
+
+function resizeText(element) {
+
+    element.style.height = "auto";
+
+    element.style.height =
+        element.scrollHeight + "px";
+
+}
+
+</script>
+
+
+</body>
+</html>
